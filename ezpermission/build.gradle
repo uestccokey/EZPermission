@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.sdkVersionCode
+        versionName rootProject.ext.sdkVersionName
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+}
+
+publish {
+    userOrg = 'uestccokey' // bintray.com用户名
+    groupId = 'cn.ezandroid' // jcenter上的路径
+    artifactId = 'EZPermission' // 项目名称
+    publishVersion = rootProject.ext.sdkVersionName // 版本号
+    desc = '一款超简单的Android运行时权限框架，兼容Android O' // 描述
+    website = 'https://github.com/uestccokey/EZPermission'// 网站
+}

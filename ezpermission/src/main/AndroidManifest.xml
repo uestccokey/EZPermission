@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.ezandroid.ezpermission">
+
+    <application>
+        <activity
+            android:name=".ProxyActivity"
+            android:exported="false"
+            android:label=""
+            android:theme="@style/EZPermission.ProxyActivity" />
+    </application>
+</manifest>
