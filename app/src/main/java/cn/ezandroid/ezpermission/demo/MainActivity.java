@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import cn.ezandroid.ezpermission.EZPermission;
+import cn.ezandroid.ezpermission.Permission;
 import cn.ezandroid.ezpermission.PermissionCallback;
-import cn.ezandroid.ezpermission.PermissionGroup;
 
 public class MainActivity extends BaseActivity {
 
@@ -22,8 +22,8 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 int v1 = ActivityCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.CAMERA);
-                boolean v2 = EZPermission.hasPermissions(MainActivity.this,
-                        PermissionGroup.CAMERA.getPermissions());
+                boolean v2 = EZPermission.permissions(Permission.CAMERA)
+                        .available(MainActivity.this);
                 Log.e("MainActivity", "hasPermissions:" + v1 + " " + v2);
             }
         });
@@ -31,17 +31,18 @@ public class MainActivity extends BaseActivity {
         $(R.id.checkPermissions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EZPermission.permissions(PermissionGroup.CAMERA, PermissionGroup.MICROPHONE, PermissionGroup.STORAGE).callback(new PermissionCallback() {
-                    @Override
-                    public void onPermissionsGranted(String[] grantPermissions) {
-                        Log.e("MainActivity", "onPermissionsGranted");
-                    }
+                EZPermission.permissions(Permission.CAMERA, Permission.MICROPHONE, Permission.STORAGE)
+                        .apply(MainActivity.this, new PermissionCallback() {
+                            @Override
+                            public void onPermissionsGranted(String[] grantPermissions) {
+                                Log.e("MainActivity", "onPermissionsGranted");
+                            }
 
-                    @Override
-                    public void onPermissionsDenied(String[] deniedPermissions) {
-                        Log.e("MainActivity", "onPermissionsDenied");
-                    }
-                }).check(MainActivity.this);
+                            @Override
+                            public void onPermissionsDenied(String[] deniedPermissions) {
+                                Log.e("MainActivity", "onPermissionsDenied");
+                            }
+                        });
             }
         });
     }
