@@ -7,7 +7,7 @@ A small and easy to use (<20KB) Android runtime permission library, compatible w
 
 [ ![Download](https://api.bintray.com/packages/uestccokey/maven/EZPermission/images/download.svg) ](https://bintray.com/uestccokey/maven/EZPermission/_latestVersion)
 
-### Feature
+### Features
 
 1.Support check the availability of permissions
 
