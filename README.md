@@ -23,9 +23,9 @@ A small and easy to use (<20KB) Android runtime permission library, compatible w
 
 ``` gradle
 dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.1' //  Gradle version < 3.0
+    compile 'cn.ezandroid:EZPermission:1.0.2' //  Gradle version < 3.0
     // Or
-    implementation 'cn.ezandroid:EZPermission:1.0.1' // Gradle version >= 3.0
+    implementation 'cn.ezandroid:EZPermission:1.0.2' // Gradle version >= 3.0
 }
 ```
 
@@ -42,17 +42,22 @@ Apply for permission
 
 ``` java
 EZPermission.permissions(Permission.CAMERA, Permission.STORAGE...)
-                        .apply(context, new PermissionCallback() {
-                            @Override
-                            public void onPermissionsGranted(String[] grantPermissions) {
-                                // agree
-                            }
+    .apply(context, new PermissionCallback() {
+        @Override
+        public void onPermissionGranted(Permission grantedPermission) {
+            // agree
+        }
 
-                            @Override
-                            public void onPermissionsDenied(String[] deniedPermissions) {
-                                // refuse
-                            }
-                        });
+        @Override
+        public void onPermissionDenied(Permission deniedPermission) {
+            // refuse
+        }
+
+        @Override
+        public void onAllPermissionsGranted() {
+            // agree all
+        }
+});
 ```
 
 

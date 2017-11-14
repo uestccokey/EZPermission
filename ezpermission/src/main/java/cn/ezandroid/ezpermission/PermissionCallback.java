@@ -11,14 +11,19 @@ public interface PermissionCallback {
     /**
      * 权限申请成功
      *
-     * @param grantPermissions 申请成功的权限列表
+     * @param grantedPermission 申请成功的权限
      */
-    void onPermissionsGranted(String[] grantPermissions);
+    void onPermissionGranted(Permission grantedPermission);
 
     /**
      * 权限申请失败
      *
-     * @param deniedPermissions 申请失败的权限列表
+     * @param deniedPermission 申请失败的权限
      */
-    void onPermissionsDenied(String[] deniedPermissions);
+    void onPermissionDenied(Permission deniedPermission);
+
+    /**
+     * 权限列表全部申请成功
+     */
+    void onAllPermissionsGranted();
 }

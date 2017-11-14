@@ -29,8 +29,8 @@ public enum Permission {
     MICROPHONE(Manifest.permission.RECORD_AUDIO),
     PHONE(Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.CALL_PHONE,
-            Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.WRITE_CALL_LOG,
+            "android.permission.READ_CALL_LOG", // Manifest.permission.READ_CALL_LOG api>=16
+            "android.permission.WRITE_CALL_LOG", // Manifest.permission.WRITE_CALL_LOG api>=16
             Manifest.permission.USE_SIP,
             Manifest.permission.PROCESS_OUTGOING_CALLS),
     SENSORS("android.permission.BODY_SENSORS"), // Manifest.permission.BODY_SENSORS api>=20
@@ -39,7 +39,7 @@ public enum Permission {
             Manifest.permission.READ_SMS,
             Manifest.permission.RECEIVE_WAP_PUSH,
             Manifest.permission.RECEIVE_MMS),
-    STORAGE(Manifest.permission.READ_EXTERNAL_STORAGE,
+    STORAGE("android.permission.READ_EXTERNAL_STORAGE", // Manifest.permission.READ_EXTERNAL_STORAGE api>=16
             Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     private String[] mPermissions;
@@ -75,15 +75,15 @@ public enum Permission {
     public void apply(Context context, PermissionCallback callback) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             if (callback != null) {
-                callback.onPermissionsGranted(mPermissions);
+                callback.onPermissionGranted(this);
             }
         } else {
             String[] deniedPermissions = getDeniedPermissions(context, mPermissions);
             if (deniedPermissions.length > 0) {
-                ProxyActivity.launch(context, deniedPermissions, callback);
+                ProxyActivity.launch(context, this, callback);
             } else {
                 if (callback != null) {
-                    callback.onPermissionsGranted(mPermissions);
+                    callback.onPermissionGranted(this);
                 }
             }
         }

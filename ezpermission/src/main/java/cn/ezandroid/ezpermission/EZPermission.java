@@ -46,9 +46,41 @@ public class EZPermission {
          * @param context
          * @param callback
          */
-        public void apply(Context context, PermissionCallback callback) {
+        public void apply(Context context, final PermissionCallback callback) {
+            PermissionCallback globalCallback = new PermissionCallback() {
+                int mGrantedCount = 0;
+
+                @Override
+                public void onPermissionGranted(Permission grantedPermission) {
+                    if (callback != null) {
+                        callback.onPermissionGranted(grantedPermission);
+                    }
+
+                    mGrantedCount++;
+                    if (mGrantedCount == mPermissionGroups.length) {
+                        onAllPermissionsGranted();
+                    }
+                }
+
+                @Override
+                public void onPermissionDenied(Permission deniedPermission) {
+                    if (callback != null) {
+                        callback.onPermissionDenied(deniedPermission);
+                    }
+
+                    mGrantedCount--;
+                }
+
+                @Override
+                public void onAllPermissionsGranted() {
+                    if (callback != null) {
+                        callback.onAllPermissionsGranted();
+                    }
+                }
+            };
+
             for (Permission permission : mPermissionGroups) {
-                permission.apply(context, callback);
+                permission.apply(context, globalCallback);
             }
         }
     }
