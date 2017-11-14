@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import java.util.ArrayList;
@@ -23,13 +24,15 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public final class ProxyActivity extends Activity {
 
-    private static final String KEY_PERMISSIONS = "KEY_PERMISSIONS";
+    private static final String KEY_PERMISSION = "KEY_PERMISSIONS";
 
     private static PermissionCallback sPermissionCallback;
 
-    public static void launch(Context context, String[] permissions, PermissionCallback permissionCallback) {
+    private Permission mPermission;
+
+    public static void launch(Context context, Permission permission, PermissionCallback permissionCallback) {
         Intent intent = new Intent(context, ProxyActivity.class);
-        intent.putExtra(ProxyActivity.KEY_PERMISSIONS, permissions);
+        intent.putExtra(ProxyActivity.KEY_PERMISSION, permission);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sPermissionCallback = permissionCallback;
         context.startActivity(intent);
@@ -40,18 +43,20 @@ public final class ProxyActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        String[] permissions = intent.getStringArrayExtra(KEY_PERMISSIONS);
+        Permission permission = (Permission) intent.getSerializableExtra(KEY_PERMISSION);
 
-        if (permissions == null) {
+        if (permission == null) {
             finish();
             return;
         }
 
-        requestPermissions(permissions, 1);
+        mPermission = permission;
+
+        requestPermissions(permission.getPermissions(), 1);
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         List<String> deniedList = new ArrayList<>();
         for (int i = 0; i < permissions.length; i++) {
@@ -61,14 +66,13 @@ public final class ProxyActivity extends Activity {
         }
         if (deniedList.isEmpty()) {
             if (sPermissionCallback != null) {
-                sPermissionCallback.onPermissionsGranted(permissions);
+                sPermissionCallback.onPermissionGranted(mPermission);
             }
         } else {
             if (sPermissionCallback != null) {
-                sPermissionCallback.onPermissionsDenied(deniedList.toArray(new String[deniedList.size()]));
+                sPermissionCallback.onPermissionDenied(mPermission);
             }
         }
-        sPermissionCallback = null;
         finish();
     }
 }

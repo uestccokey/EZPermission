@@ -34,13 +34,18 @@ public class MainActivity extends BaseActivity {
                 EZPermission.permissions(Permission.CAMERA, Permission.MICROPHONE, Permission.STORAGE)
                         .apply(MainActivity.this, new PermissionCallback() {
                             @Override
-                            public void onPermissionsGranted(String[] grantPermissions) {
-                                Log.e("MainActivity", "onPermissionsGranted");
+                            public void onPermissionGranted(Permission grantedPermission) {
+                                Log.e("MainActivity", "onPermissionGranted:" + grantedPermission.name());
                             }
 
                             @Override
-                            public void onPermissionsDenied(String[] deniedPermissions) {
-                                Log.e("MainActivity", "onPermissionsDenied");
+                            public void onPermissionDenied(Permission deniedPermission) {
+                                Log.e("MainActivity", "onPermissionDenied:" + deniedPermission.name());
+                            }
+
+                            @Override
+                            public void onAllPermissionsGranted() {
+                                Log.e("MainActivity", "onAllPermissionsGranted");
                             }
                         });
             }
