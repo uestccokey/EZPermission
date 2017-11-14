@@ -1,4 +1,4 @@
-# ![Logo](https://raw.githubusercontent.com/uestccokey/EZPermission/master/logo.png)
+# # ![Logo](https://raw.githubusercontent.com/uestccokey/EZPermission/master/logo.png)
 # EZPermission
 
 一款小巧易用的（<20KB）Android运行时权限框架，兼容Android O
@@ -23,9 +23,9 @@
 
 ``` gradle
 dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.1' // Gradle 3.0以下
+    compile 'cn.ezandroid:EZPermission:1.0.2' // Gradle 3.0以下
     // 或者
-    implementation 'cn.ezandroid:EZPermission:1.0.1' // Gradle3.0及以上
+    implementation 'cn.ezandroid:EZPermission:1.0.2' // Gradle3.0及以上
 }
 ```
 
@@ -42,17 +42,22 @@ boolean available = EZPermission.permissions(Permission.CAMERA, Permission.STORA
 
 ``` java
 EZPermission.permissions(Permission.CAMERA, Permission.STORAGE...)
-                        .apply(context, new PermissionCallback() {
-                            @Override
-                            public void onPermissionsGranted(String[] grantPermissions) {
-                                // 同意申请
-                            }
+    .apply(context, new PermissionCallback() {
+        @Override
+        public void onPermissionGranted(Permission grantedPermission) {
+            // 同意申请
+        }
 
-                            @Override
-                            public void onPermissionsDenied(String[] deniedPermissions) {
-                                // 拒绝申请
-                            }
-                        });
+        @Override
+        public void onPermissionDenied(Permission deniedPermission) {
+            // 拒绝申请
+        }
+
+        @Override
+        public void onAllPermissionsGranted() {
+            // 权限全部申请成功
+        }
+});
 ```
 
 
