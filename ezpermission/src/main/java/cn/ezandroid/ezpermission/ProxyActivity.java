@@ -26,7 +26,7 @@ public final class ProxyActivity extends Activity {
 
     private static final String KEY_PERMISSION = "KEY_PERMISSIONS";
 
-    private static PermissionCallback sPermissionCallback;
+    public static PermissionCallback sPermissionCallback;
 
     private Permission mPermission;
 
