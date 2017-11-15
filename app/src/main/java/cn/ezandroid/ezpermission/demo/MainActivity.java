@@ -35,12 +35,14 @@ public class MainActivity extends BaseActivity {
                         .apply(MainActivity.this, new PermissionCallback() {
                             @Override
                             public void onPermissionGranted(Permission grantedPermission) {
-                                Log.e("MainActivity", "onPermissionGranted:" + grantedPermission.name());
+                                Log.e("MainActivity", "onPermissionGranted:" + grantedPermission.name()
+                                        + " " + grantedPermission.available(MainActivity.this));
                             }
 
                             @Override
-                            public void onPermissionDenied(Permission deniedPermission) {
-                                Log.e("MainActivity", "onPermissionDenied:" + deniedPermission.name());
+                            public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
+                                Log.e("MainActivity", "onPermissionDenied:" + deniedPermission.name()
+                                        + " " + deniedPermission.available(MainActivity.this) + " " + isNoLongerPrompted);
                             }
 
                             @Override

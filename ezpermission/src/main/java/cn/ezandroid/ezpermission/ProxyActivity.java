@@ -69,8 +69,16 @@ public final class ProxyActivity extends Activity {
                 sPermissionCallback.onPermissionGranted(mPermission);
             }
         } else {
+            boolean isNoLongerPrompted = false;
+            for (String p : mPermission.getPermissions()) {
+                boolean rationale = shouldShowRequestPermissionRationale(p);
+                if (!rationale) {
+                    isNoLongerPrompted = true;
+                    break;
+                }
+            }
             if (sPermissionCallback != null) {
-                sPermissionCallback.onPermissionDenied(mPermission);
+                sPermissionCallback.onPermissionDenied(mPermission, isNoLongerPrompted);
             }
         }
         finish();
