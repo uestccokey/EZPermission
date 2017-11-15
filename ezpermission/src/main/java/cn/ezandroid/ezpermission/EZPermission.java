@@ -1,6 +1,5 @@
 package cn.ezandroid.ezpermission;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -55,6 +54,7 @@ public class EZPermission {
             PermissionCallback globalCallback = new PermissionCallback() {
                 int mGrantedCount = 0;
                 int mRemainCount = mPermissionGroups.length;
+                boolean mHasNoLongerPrompted;// 是否有勾选了不再提示并且拒绝的权限
 
                 @Override
                 public void onPermissionGranted(Permission grantedPermission) {
@@ -66,19 +66,21 @@ public class EZPermission {
 
                     mRemainCount--;
                     if (mRemainCount <= 0) {
-                        onAllComplete();
+                        onAllComplete(false);
                     }
                 }
 
                 @Override
-                public void onPermissionDenied(Permission deniedPermission) {
+                public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
                     if (callback != null) {
-                        callback.onPermissionDenied(deniedPermission);
+                        callback.onPermissionDenied(deniedPermission, isNoLongerPrompted);
                     }
+
+                    mHasNoLongerPrompted = mHasNoLongerPrompted || isNoLongerPrompted;
 
                     mRemainCount--;
                     if (mRemainCount <= 0) {
-                        onAllComplete();
+                        onAllComplete(mHasNoLongerPrompted);
                     }
                 }
 
@@ -89,42 +91,25 @@ public class EZPermission {
                     }
                 }
 
-                private void onAllComplete() {
+                private void onAllComplete(boolean startSetting) {
                     if (mGrantedCount == mPermissionGroups.length) {
                         onAllPermissionsGranted();
-                    } else if (isAlwaysRefusePermission(context)) {
-                        // 跳转到应用设置页
-                        try {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            Uri uri = Uri.parse("package:" + context.getPackageName());
-                            intent.setData(uri);
-                            context.startActivity(intent);
-                        } catch (Exception e) {
-                            // try住异常，以防找不到应用设置页的情况
-                        }
+                    } else if (startSetting) {
+                        startSetting();
                     }
                 }
 
                 /**
-                 * 是否用户选择了不再提醒
-                 *
-                 * @param activity
-                 * @return
+                 * 跳转到应用设置页
                  */
-                private boolean isAlwaysRefusePermission(Context activity) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity instanceof Activity) {
-                        for (Permission permission : mPermissionGroups) {
-                            if (!permission.available(activity)) {
-                                for (String p : permission.getPermissions()) {
-                                    boolean rationale = ((Activity) activity).shouldShowRequestPermissionRationale(p);
-                                    if (!rationale) {
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
+                private void startSetting() {
+                    try {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + context.getPackageName()));
+                        context.startActivity(intent);
+                    } catch (Exception e) {
+                        // try住异常，以防找不到应用设置页的情况
                     }
-                    return false;
                 }
             };
 

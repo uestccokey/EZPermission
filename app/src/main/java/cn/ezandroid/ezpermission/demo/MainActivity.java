@@ -40,9 +40,9 @@ public class MainActivity extends BaseActivity {
                             }
 
                             @Override
-                            public void onPermissionDenied(Permission deniedPermission) {
+                            public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
                                 Log.e("MainActivity", "onPermissionDenied:" + deniedPermission.name()
-                                        + " " + deniedPermission.available(MainActivity.this));
+                                        + " " + deniedPermission.available(MainActivity.this) + " " + isNoLongerPrompted);
                             }
 
                             @Override

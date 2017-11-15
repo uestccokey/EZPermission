@@ -18,9 +18,10 @@ public interface PermissionCallback {
     /**
      * 权限申请失败
      *
-     * @param deniedPermission 申请失败的权限
+     * @param deniedPermission   申请失败的权限
+     * @param isNoLongerPrompted 是否不再提示
      */
-    default void onPermissionDenied(Permission deniedPermission) {}
+    default void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {}
 
     /**
      * 权限列表全部申请成功
