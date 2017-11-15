@@ -66,7 +66,7 @@ public class EZPermission {
 
                     mRemainCount--;
                     if (mRemainCount <= 0) {
-                        onAllComplete(false);
+                        onAllComplete(mHasNoLongerPrompted);
                     }
                 }
 
@@ -106,8 +106,10 @@ public class EZPermission {
                     try {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.setData(Uri.parse("package:" + context.getPackageName()));
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // 非Activity的Context必须加此参数
                         context.startActivity(intent);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         // try住异常，以防找不到应用设置页的情况
                     }
                 }
