@@ -121,6 +121,8 @@ public class EZPermission {
                 for (Permission permission : mPermissionGroups) {
                     permission.apply(context, globalCallback);
                 }
+
+                ProxyActivity.sPermissionCallback = null; // 防止内存泄漏
             }
         }
     }
