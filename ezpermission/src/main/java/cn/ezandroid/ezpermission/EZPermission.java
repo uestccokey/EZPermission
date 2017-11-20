@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 权限管理
  *
@@ -15,6 +18,18 @@ import android.provider.Settings;
 public class EZPermission {
 
     private EZPermission() {
+    }
+
+    public static Builder permissions(String... permission) {
+        return new Builder(new Permission(permission));
+    }
+
+    public static Builder permissions(String[]... groups) {
+        List<Permission> permissions = new ArrayList<>();
+        for (String[] group : groups) {
+            permissions.add(new Permission(group));
+        }
+        return new Builder(permissions.toArray(new Permission[permissions.size()]));
     }
 
     public static Builder permissions(Permission... groups) {
@@ -54,7 +69,7 @@ public class EZPermission {
             PermissionCallback globalCallback = new PermissionCallback() {
                 int mGrantedCount = 0;
                 int mRemainCount = mPermissionGroups.length;
-                boolean mHasNoLongerPrompted;// 是否有勾选了不再提示并且拒绝的权限
+                boolean mHasNoLongerPrompted; // 是否有勾选了不再提示并且拒绝的权限
 
                 @Override
                 public void onPermissionGranted(Permission grantedPermission) {
@@ -97,6 +112,10 @@ public class EZPermission {
                     } else if (startSetting) {
                         startSetting();
                     }
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        ProxyActivity.sPermissionCallback = null; // 防止内存泄漏
+                    }
                 }
 
                 /**
@@ -121,8 +140,6 @@ public class EZPermission {
                 for (Permission permission : mPermissionGroups) {
                     permission.apply(context, globalCallback);
                 }
-
-                ProxyActivity.sPermissionCallback = null; // 防止内存泄漏
             }
         }
     }

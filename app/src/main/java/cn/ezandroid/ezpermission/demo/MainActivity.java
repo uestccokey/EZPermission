@@ -31,17 +31,19 @@ public class MainActivity extends BaseActivity {
         $(R.id.checkPermissions).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EZPermission.permissions(Permission.CAMERA, Permission.MICROPHONE, Permission.STORAGE)
+                Permission storage = new Permission(Permission.STORAGE);
+                Permission readPhoneState = new Permission(Manifest.permission.READ_PHONE_STATE);
+                EZPermission.permissions(storage, readPhoneState)
                         .apply(MainActivity.this, new PermissionCallback() {
                             @Override
                             public void onPermissionGranted(Permission grantedPermission) {
-                                Log.e("MainActivity", "onPermissionGranted:" + grantedPermission.name()
+                                Log.e("MainActivity", "onPermissionGranted:" + grantedPermission
                                         + " " + grantedPermission.available(MainActivity.this));
                             }
 
                             @Override
                             public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
-                                Log.e("MainActivity", "onPermissionDenied:" + deniedPermission.name()
+                                Log.e("MainActivity", "onPermissionDenied:" + deniedPermission
                                         + " " + deniedPermission.available(MainActivity.this) + " " + isNoLongerPrompted);
                             }
 
