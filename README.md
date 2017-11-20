@@ -23,9 +23,9 @@ A small and easy to use (<20KB) Android runtime permission library, compatible w
 
 ``` gradle
 dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.4' //  Gradle version < 3.0
+    compile 'cn.ezandroid:EZPermission:1.0.5' //  Gradle version < 3.0
     // Or
-    implementation 'cn.ezandroid:EZPermission:1.0.4' // Gradle version >= 3.0
+    implementation 'cn.ezandroid:EZPermission:1.0.5' // Gradle version >= 3.0
 }
 ```
 
