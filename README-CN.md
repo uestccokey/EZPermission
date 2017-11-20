@@ -23,9 +23,9 @@
 
 ``` gradle
 dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.4' // Gradle 3.0以下
+    compile 'cn.ezandroid:EZPermission:1.0.5' // Gradle 3.0以下
     // 或者
-    implementation 'cn.ezandroid:EZPermission:1.0.4' // Gradle3.0及以上
+    implementation 'cn.ezandroid:EZPermission:1.0.5' // Gradle3.0及以上
 }
 ```
 
