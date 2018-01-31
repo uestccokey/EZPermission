@@ -49,7 +49,7 @@ EZPermission.permissions(Permission.CAMERA, Permission.STORAGE...)
         }
 
         @Override
-        public void onPermissionDenied(Permission deniedPermission) {
+        public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
             // 拒绝申请
         }
 
