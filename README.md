@@ -5,8 +5,6 @@ A small and easy to use (<20KB) Android runtime permission library, compatible w
 
 [中文](README-CN.md)
 
-[ ![Download](https://api.bintray.com/packages/uestccokey/maven/EZPermission/images/download.svg) ](https://bintray.com/uestccokey/maven/EZPermission/_latestVersion)
-
 ### Features
 
 1.Support check the availability of permissions
@@ -16,18 +14,6 @@ A small and easy to use (<20KB) Android runtime permission library, compatible w
 3.Support batch apply for permissions
 
 4.Support Android O
-
-### Usage
-
-#### Gradle
-
-``` gradle
-dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.5' //  Gradle version < 3.0
-    // Or
-    implementation 'cn.ezandroid:EZPermission:1.0.5' // Gradle version >= 3.0
-}
-```
 
 #### Sample
 
@@ -44,12 +30,12 @@ Apply for permission
 EZPermission.permissions(Permission.CAMERA, Permission.STORAGE...)
     .apply(context, new PermissionCallback() {
         @Override
-        public void onPermissionGranted(Permission grantedPermission) {
+        public void onPermissionGranted(String[] grantedPermissions) {
             // agree
         }
 
         @Override
-        public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
+        public void onPermissionDenied(String[] deniedPermissions, boolean isNoLongerPrompted) {
             // refuse
         }
 

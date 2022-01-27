@@ -5,8 +5,6 @@
 
 [English](README.md)
 
-[ ![Download](https://api.bintray.com/packages/uestccokey/maven/EZPermission/images/download.svg) ](https://bintray.com/uestccokey/maven/EZPermission/_latestVersion)
-
 ### 功能
 
 1.支持检查权限是否可用
@@ -16,18 +14,6 @@
 3.支持批量申请权限
 
 4.兼容Android O
-
-### 使用
-
-#### Gradle
-
-``` gradle
-dependencies {
-    compile 'cn.ezandroid:EZPermission:1.0.5' // Gradle 3.0以下
-    // 或者
-    implementation 'cn.ezandroid:EZPermission:1.0.5' // Gradle3.0及以上
-}
-```
 
 #### 示例
 
@@ -44,12 +30,12 @@ boolean available = EZPermission.permissions(Permission.CAMERA, Permission.STORA
 EZPermission.permissions(Permission.CAMERA, Permission.STORAGE...)
     .apply(context, new PermissionCallback() {
         @Override
-        public void onPermissionGranted(Permission grantedPermission) {
+        public void onPermissionGranted(String[] grantedPermissions) {
             // 同意申请
         }
 
         @Override
-        public void onPermissionDenied(Permission deniedPermission, boolean isNoLongerPrompted) {
+        public void onPermissionDenied(String[] deniedPermissions, boolean isNoLongerPrompted) {
             // 拒绝申请
         }
 
